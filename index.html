@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html class="page" lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <link rel="stylesheet" href="style.css"/>
+        <title>Task manager</title>
+    </head>
+    <body>
+        <h1 class="main-headline">Please set a task</h1>
+        <div class="input-wrapper">
+            <div class="input-field">
+                <input id="input_text" type="text" data-length="20">
+                <label for="input_text">Write new task</label>
+            </div>
+            <div class="input-field textarea-field">
+                <textarea id="textarea2" class="materialize-textarea" data-length="120"></textarea>
+                <label for="textarea2">Write description</label>
+                <button class="btn waves-effect waves-light btn-submit" type="submit" name="action">Add a task</button>
+            </div>
+        </div>
+        
+        <div class="lists-container">
+            <div class="list-container">
+                <h2 class="headline text-upper">Open</h2>
+                <ul class="collection"></ul>
+                <button class="btn waves-effect waves-light" id="clear-button">Clear list</button>
+            </div>
+            <div class="list-container">
+                <h2 class="headline text-upper">In process</h2>
+                <ul class="collection"></ul>
+                <button class="btn waves-effect waves-light" id="clear-button">Clear list</button>
+            </div>
+            <div class="list-container">
+                <h2 class="headline text-upper">Closed</h2>
+                <ul class="collection"></ul>
+                <button class="btn waves-effect waves-light" id="clear-button">Clear list</button>
+            </div>
+        </div>
+
+        <template id="task-temp">
+            <li class="collection-item" id="task-item">
+                <div class="task-item">
+                    <span class="text-span" id="title">Task</span>
+                    <div>
+                        <a class="waves-effect waves-light btn-small">More</a>
+                        <button class="waves-effect waves-light btn-small" type="button">Delete</button>
+                    </div>
+                </div>
+                <div class="card-item" id="info-card">
+                    <p class="description" id="description"> пппппппппппппп</p>
+                    <span class="bold" id="_id">ID: </span>
+                    <div class="date">
+                        <span class="bold">Created at: </span>
+                        <span id="createdAt"></span>
+                    </div>
+                    <div class="date">
+                        <span class="bold">Apdated at: </span>
+                        <span id="updatedAt"></span>
+                    </div>
+                </div>
+            </li>  
+        </template>
+        
+        <script src="app.js"></script>
+    </body>
+</html>

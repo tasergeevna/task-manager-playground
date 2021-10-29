@@ -1,0 +1,46 @@
+https://task-management-app-back.herokuapp.com/tasks
+
+-- Получить список задач ---
+GET: https://task-management-app-back.herokuapp.com/tasks
+
+Параметры: 
+ - status
+ - search
+ 
+Пример:
+  https://task-management-app-back.herokuapp.com/tasks?status=OPEN
+  https://task-management-app-back.herokuapp.com/tasks?status=DONE
+  https://task-management-app-back.herokuapp.com/tasks?search=bath
+  https://task-management-app-back.herokuapp.com/tasks?search=bath?status=OPEN  
+
+Ответ:
+  массив объектов Task
+  
+  Структура Task
+    title - string
+    description - string
+    status - string enum (OPEN, IN_PROGRESS, DONE)
+    _id - string
+    createdAt - string date in ISO format
+    updatedAt - string date in ISO format
+
+Пример:
+  [
+    {
+        "title": "Cook some food",
+        "description": "Pork with mushrooms",
+        "status": "OPEN",
+        "_id": "X2HZ5DwTlRxLu1MF",
+        "createdAt": "2021-10-28T08:45:38.826Z",
+        "updatedAt": "2021-10-28T08:45:38.826Z"
+    },
+    {
+        "title": "Clean the bath",
+        "description": "Floor, Bath, Sink",
+        "status": "OPEN",
+        "_id": "leHUJAqwwIeN4qAR",
+        "createdAt": "2021-10-28T08:45:41.792Z",
+        "updatedAt": "2021-10-28T08:45:41.792Z"
+    }
+]
+  

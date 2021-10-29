@@ -1,0 +1,100 @@
+body {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px 40px;
+}
+
+p {
+    margin: 0;
+}
+
+.main-headline {
+    text-align: center;
+}
+
+.headline {
+    text-align: center;
+    font-size: 3rem;
+}
+
+.input-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 50px;
+    margin-bottom: 30px;
+}
+
+.textarea-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-submit {
+    margin-top: 20px;
+}
+
+.text-upper {
+    text-transform: uppercase;
+}
+
+.collection-item span {
+    margin-top: calc(.75rem - 5px);
+}
+
+.collection-item span.badge {
+    margin-top: calc(.75rem - 7px);
+}
+
+.collection-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.lists-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 30px;
+    padding-bottom: 20px;
+}
+
+.list-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.task-item {
+    display: grid;
+    grid-template-columns: 2fr auto;
+}
+
+.card-item {
+    padding-top: 10px;
+    width: 100%;
+}
+
+div.card-panel {
+    margin: 0;
+}
+
+.display-none {
+    display: none;
+}
+
+.text-span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.description {
+    margin-bottom: 10px;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.date {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
