@@ -18,7 +18,7 @@
             <div class="input-field textarea-field">
                 <textarea id="textarea2" class="materialize-textarea" data-length="120"></textarea>
                 <label for="textarea2">Write description</label>
-                <button class="btn waves-effect waves-light btn-submit" type="submit" name="action">Add a task</button>
+                <button class="btn waves-effect waves-light btn-submit" id="add-task-btn" type="button">Add a task</button>
             </div>
         </div>
         
@@ -29,12 +29,12 @@
                 <button class="btn waves-effect waves-light" id="clear-button">Clear list</button>
             </div>
             <div class="list-container">
-                <h2 class="headline text-upper">In process</h2>
+                <h2 class="headline text-upper">In progress</h2>
                 <ul class="collection"></ul>
                 <button class="btn waves-effect waves-light" id="clear-button">Clear list</button>
             </div>
             <div class="list-container">
-                <h2 class="headline text-upper">Closed</h2>
+                <h2 class="headline text-upper">Done</h2>
                 <ul class="collection"></ul>
                 <button class="btn waves-effect waves-light" id="clear-button">Clear list</button>
             </div>
@@ -44,21 +44,21 @@
             <li class="collection-item" id="task-item">
                 <div class="task-item">
                     <span class="text-span" id="title">Task</span>
-                    <div>
-                        <a class="waves-effect waves-light btn-small">More</a>
-                        <button class="waves-effect waves-light btn-small" type="button">Delete</button>
+                    <div id="btns-container">
+                        <a class="waves-effect waves-light btn-small" id="more-button">More</a>
+                        <button class="waves-effect waves-light btn-small" id="delete-button" type="button">Delete</button>
                     </div>
                 </div>
                 <div class="card-item" id="info-card">
-                    <p class="description" id="description"> пппппппппппппп</p>
+                    <p class="description" id="description"></p>
                     <span class="bold" id="_id">ID: </span>
-                    <div class="date">
-                        <span class="bold">Created at: </span>
-                        <span id="createdAt"></span>
+                    <div class="date" id="create-container">
+                        <span class="bold" id="create-prefix">Created at: </span>
+                        <span id="created-at"></span>
                     </div>
-                    <div class="date">
-                        <span class="bold">Apdated at: </span>
-                        <span id="updatedAt"></span>
+                    <div class="date" id="update-container">
+                        <span class="bold" id="update-prefix">Updated at: </span>
+                        <span id="updated-at"></span>
                     </div>
                 </div>
             </li>  
