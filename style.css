@@ -98,3 +98,7 @@ div.card-panel {
     flex-direction: column;
     margin-top: 10px;
 }
+
+.more-button {
+    margin-right: 5px;
+}
