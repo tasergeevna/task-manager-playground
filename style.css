@@ -33,10 +33,6 @@ p {
     margin-top: 20px;
 }
 
-.text-upper {
-    text-transform: uppercase;
-}
-
 .collection-item span {
     margin-top: calc(.75rem - 5px);
 }
@@ -101,4 +97,37 @@ div.card-panel {
 
 .more-button {
     margin-right: 5px;
+}
+
+.collection .collection-item.active {
+    background-color: white;
+    color: rgba(0,0,0,0.87);
+}
+
+.collapsible-body {
+    border-bottom: none;
+    padding: 1rem;
+}
+
+.btns-container {
+    display: flex;
+}
+
+.collapsible-header {
+    display: inline-block;
+    line-height: 1.5;
+    padding: 8px 16px;
+    text-align: center;
+    background-color: #2bbbad;
+    border-bottom: none;
+}
+
+.item-border {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+
+.none-shadow {
+    box-shadow: none;
+    -webkit-box-shadow: none; 
 }

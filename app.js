@@ -6,6 +6,8 @@ const container = document.querySelector(".lists-container");
 const listOpen = document.querySelector("#open");
 const listInProgress = document.querySelector("#in-progress");
 const listDone = document.querySelector("#done");
+const lists = document.querySelectorAll(".collection");
+const clearListButtons = document.querySelectorAll(".clear-button");
 
 const mainArray = [
     {
@@ -15,6 +17,14 @@ const mainArray = [
         "_id": "X2HZ5DwTlRxLu1MF",
         "createdAt": "2021-10-28T08:45:38.826Z",
         "updatedAt": "2021-10-28T08:45:38.826Z"
+    },
+    {
+        "title": "Clean the bath",
+        "description": "Floor, Bath, Sink",
+        "status": "IN_PROGRESS",
+        "_id": "leHUJAqwwIeN4qAR",
+        "createdAt": "2021-10-28T08:45:41.792Z",
+        "updatedAt": "2021-10-28T08:45:41.792Z"
     },
     {
         "title": "Clean the bath",
@@ -52,7 +62,7 @@ const rendering = (mainArray) => {
         taskItem.setAttribute("data-index", i);
         title.textContent = mainArray[i]["title"];
         description.textContent = mainArray[i]["description"];
-        taskId.textContent = mainArray[i]["_id"];
+        taskId.textContent = `ID: ${mainArray[i]["_id"]}`;
         isoCreated.textContent = mainArray[i]["createdAt"];
         isoUpdated.textContent = mainArray[i]["updatedAt"];
 
@@ -60,7 +70,7 @@ const rendering = (mainArray) => {
         taskItem.addEventListener("dragstart", dragstart);
         taskItem.addEventListener("dragend", dragend);
         */
-        // deleteTaskButton.addEventListener("click", deleteTask);
+        deleteTaskButton.addEventListener("click", deleteTask);
         moreButton.addEventListener("click", showCard);
 
         taskItem.append(taskContainer, card);
@@ -76,6 +86,11 @@ const rendering = (mainArray) => {
         } else if (mainArray[i]["status"] === "IN_PROGRESS") {
             listInProgress.append(taskItem);
         } else {listDone.append(taskItem);
+        } 
+    }
+    for (let list of lists) {
+        if (list.children.length === 0) {
+            list.classList.add("none-shadow");
         }
     }
 }
@@ -87,56 +102,54 @@ const rendering = (mainArray) => {
     listContainer.addEventListener("dragenter", dragenter);
     listContainer.addEventListener("dragleave", dragleave);
     listContainer.addEventListener("drop", dragdrop);
-    listHeadline.textContent = key;
-    if (key === "General") {
-        listHeadline.textContent = "General";
-        listContainer.classList.add("general-container");
-        container.appendChild(listContainer);
-        list.classList.add("done-list");
-        listContainer.prepend(listHeadline, list);
-        listContainer.removeChild(listDelete);
-        listClearButton.addEventListener("click", clearGeneralList);
-        showDoneButton.addEventListener("click", showDoneTasks);
-        if (Object.keys(mainObject).length > 2) {
-            ordinaryLists = document.createElement("div");
-            ordinaryLists.classList.add("ordinary-lists");
-            container.appendChild(ordinaryLists);
-        }
-    } else {
-            ordinaryLists.appendChild(listContainer);
-            listHeadline.classList.add("headline-ordinary");
-            listContainer.prepend(listHeadline, list, listDelete); 
-            listContainer.removeChild(listClearButton);
-            listContainer.removeChild(showDoneButton);
-            listDelete.addEventListener("click", deleteList);
-    }
     
-}
+        listClearButton.addEventListener("click", clearGeneralList);
+        
 
 
 */
 
 
-// Buttons listeners
+// Buttons listeners and functions
 
 function showCard(event) {
     event.preventDefault();
     let root = event.target.parentNode.parentNode.parentNode.lastChild;
+   
     root.classList.toggle("display-none");
     if (!root.classList.contains("display-none")) {
         event.target.textContent = "hide";
+        event.target.parentNode.parentNode.classList.add("item-border");
     } else {event.target.textContent = "more";
+    event.target.parentNode.parentNode.classList.remove("item-border");
     }
 }
-
-// добавить эффект коллапсибл! 
 
 function deleteTask(event) {
     event.preventDefault();
     let root = event.target.parentNode.parentNode.parentNode;
-    mainArray.splice(root.dataset.index, 1);
+    let index = root.getAttribute("data-index");
+    root.parentNode.removeChild(root);
+    mainArray.splice(index, 1);
     rendering(mainArray);
 }
+
+for (let button of clearListButtons) {
+    button.addEventListener("click", (event) => {
+        event.preventDefault();
+        let status = event.target.parentNode.firstElementChild.textContent;
+        
+        for (let i = 0; i < mainArray.length; i ++) {
+            if (mainArray[i]["status"] === status || (mainArray[i]["status"] === "IN_PROGRESS" && "IN PROGRESS" === status)) {
+                mainArray.splice(i, 1);
+            }
+        }
+        event.target.parentNode.children[1].innerHTML = ""; 
+        event.target.parentNode.children[1].classList.add("none-shadow");
+        rendering(mainArray); 
+    })
+}
+
 
 // Extracting from template
 
@@ -187,5 +200,13 @@ function updateTask(event) {
 function updateDesc(event) {
     descriptionInput.textContent = event.target.value;
 }
+
+// Effects
+
+document.addEventListener('DOMContentLoaded', function() {
+    let elems = document.querySelectorAll('.collapsible');
+    let instances = M.Collapsible.init(elems);
+});
+
 
 rendering(mainArray);
