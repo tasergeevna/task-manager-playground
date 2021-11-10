@@ -1,4 +1,6 @@
 const addTaskButton = document.querySelector("#add-task-btn");
+const clearTaskInputBtn = document.querySelector("#clear-input");
+const clearDescInputBtn = document.querySelector("#clear-textarea");
 const taskInput = document.querySelector("#input_text");
 const descriptionInput = document.querySelector("#textarea2");
 const container = document.querySelector(".lists-container");
@@ -33,15 +35,35 @@ const mainArray = [
         "_id": "leHUJAqwwIeN4qAR",
         "createdAt": "2021-10-28T08:45:41.792Z",
         "updatedAt": "2021-10-28T08:45:41.792Z"
+    },
+    {
+        "title": "Clean the bath",
+        "description": "Floor, Bath, Sink",
+        "status": "IN_PROGRESS",
+        "_id": "leHUJAqwwIeN4qAR",
+        "createdAt": "2021-10-28T08:45:41.792Z",
+        "updatedAt": "2021-10-28T08:45:41.792Z"
+    },
+    {
+        "title": "Clean the bath",
+        "description": "Floor, Bath, Sink",
+        "status": "DONE",
+        "_id": "leHUJAqwwIeN4qAR",
+        "createdAt": "2021-10-28T08:45:41.792Z",
+        "updatedAt": "2021-10-28T08:45:41.792Z"
     }
 ];
 
 // Page rendering
 
+let j;
+
 const rendering = (mainArray) => {
     listOpen.innerHTML = "";
     listInProgress.innerHTML = "";
     listDone.innerHTML = "";
+    taskInput.value = "";
+    descriptionInput.value = "";
     
     for (let i = 0; i < mainArray.length; i++) {
         const {taskItem, 
@@ -66,10 +88,9 @@ const rendering = (mainArray) => {
         isoCreated.textContent = mainArray[i]["createdAt"];
         isoUpdated.textContent = mainArray[i]["updatedAt"];
 
-        /*
         taskItem.addEventListener("dragstart", dragstart);
         taskItem.addEventListener("dragend", dragend);
-        */
+       
         deleteTaskButton.addEventListener("click", deleteTask);
         moreButton.addEventListener("click", showCard);
 
@@ -92,25 +113,50 @@ const rendering = (mainArray) => {
         if (list.children.length === 0) {
             list.classList.add("none-shadow");
         }
+        list.addEventListener("dragover", dragover);
+        list.addEventListener("dragenter", dragenter);
+        list.addEventListener("dragleave", dragleave);
+        list.addEventListener("drop", dragdrop);
     }
 }
 
-    
-
-    /*listContainer.addEventListener("dragover", dragover);
-    listContainer.setAttribute("data-key", key);
-    listContainer.addEventListener("dragenter", dragenter);
-    listContainer.addEventListener("dragleave", dragleave);
-    listContainer.addEventListener("drop", dragdrop);
-    
-        listClearButton.addEventListener("click", clearGeneralList);
-        
-
-
-*/
-
 
 // Buttons listeners and functions
+
+addTaskButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (taskInput.value == "") {
+        alert("Write title!")
+    } else {
+        mainArray.push({"title": taskInput.value, "description": descriptionInput.value, "status": "OPEN", })
+        taskInput.value = ""; 
+        descriptionInput.value = "";
+        rendering(mainArray);
+    }
+})
+
+taskInput.addEventListener("input", (event) => {
+    event.preventDefault();
+    clearTaskInputBtn.classList.remove("display-none");
+})
+
+clearTaskInputBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    taskInput.value = "";
+    clearTaskInputBtn.classList.add("display-none");
+})
+
+descriptionInput.addEventListener("input", (event) => {
+    event.preventDefault();
+    clearDescInputBtn.classList.remove("display-none");
+})
+
+
+clearDescInputBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    descriptionInput.value = "";
+    clearDescInputBtn.classList.add("display-none");
+})
 
 function showCard(event) {
     event.preventDefault();
@@ -148,6 +194,51 @@ for (let button of clearListButtons) {
         event.target.parentNode.children[1].classList.add("none-shadow");
         rendering(mainArray); 
     })
+}
+
+// Drag`n`drop 
+
+function dragstart(event) {
+    event.target.classList.add("hold");
+    setTimeout(() => {
+        event.target.classList.add("display-none");
+    }, 0);
+    j = {
+        taskItem: event.target,
+        index: event.target.getAttribute("data-index")
+    }
+}
+
+function dragend(event) {
+    event.target.classList.remove("hold");
+    event.target.classList.remove("display-none");
+}
+
+function dragover(event) {
+    event.preventDefault();
+}
+
+function dragenter(event) {
+    event.currentTarget.classList.add("hovered");
+}
+
+function dragleave(event) {
+    event.currentTarget.classList.remove("hovered");
+}
+
+function dragdrop(event) {
+    event.currentTarget.classList.remove("hovered");
+    if (event.currentTarget.parentNode.firstElementChild.textContent === "IN PROGRESS") {
+        mainArray[j.index]["status"] = "IN_PROGRESS";
+        rendering(mainArray);
+    } else if (event.currentTarget.parentNode.firstElementChild.textContent === "DONE") {
+        mainArray[j.index]["status"] = "DONE";
+        rendering(mainArray);
+    } else {
+        mainArray[j.index]["status"] = "OPEN"
+        rendering(mainArray);
+    }
+    j = null;
 }
 
 

@@ -24,6 +24,10 @@ p {
     margin-bottom: 30px;
 }
 
+.input-field {
+    position: relative;
+}
+
 .textarea-field {
     display: flex;
     flex-direction: column;
@@ -74,6 +78,11 @@ div.card-panel {
 
 .display-none {
     display: none;
+}
+
+.hold,
+.hovered {
+    border: 2px solid #2bbbad;
 }
 
 .text-span {
@@ -131,3 +140,45 @@ div.card-panel {
     box-shadow: none;
     -webkit-box-shadow: none; 
 }
+
+.clear-input-btn {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    background-color: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.clear-input-btn:focus,
+.clear-input-btn:hover {
+    outline: none;
+    background-color: transparent;
+}
+
+.clear-input-btn::before, 
+.clear-input-btn::after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 22px;
+    width: 1px;
+    background-color: #2bbbad;
+}
+
+.clear-input-btn:hover::before, 
+.clear-input-btn:hover::after {
+    width: 2px;
+}
+
+.clear-input-btn::before {
+    transform: rotate(45deg);
+}
+
+.clear-input-btn::after {
+    transform: rotate(-45deg);
+}
+
+

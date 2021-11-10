@@ -14,10 +14,12 @@
             <div class="input-field">
                 <input id="input_text" type="text" data-length="20">
                 <label for="input_text">Write new task</label>
+                <button class="clear-input-btn display-none" id="clear-input" type="button"></button>
             </div>
             <div class="input-field textarea-field">
                 <textarea id="textarea2" class="materialize-textarea" data-length="120"></textarea>
                 <label for="textarea2">Write description</label>
+                <button class="clear-input-btn display-none" id="clear-textarea" type="button"></button>
                 <button class="btn waves-effect waves-light btn-submit" id="add-task-btn" type="button">Add a task</button>
             </div>
         </div>
@@ -41,7 +43,7 @@
         </div>
 
         <template id="task-temp">
-            <li class="collection-item" id="task-item">
+            <li class="collection-item" id="task-item" draggable="true">
                 <div class="task-item ">
                     <span class="text-span" id="title">Task</span>
                     <div id="btns-container">
