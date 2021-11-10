@@ -4,6 +4,7 @@ const clearDescInputBtn = document.querySelector("#clear-textarea");
 const taskInput = document.querySelector("#input_text");
 const descriptionInput = document.querySelector("#textarea2");
 const container = document.querySelector(".lists-container");
+const body = document.querySelector("#body");
 
 const listOpen = document.querySelector("#open");
 const listInProgress = document.querySelector("#in-progress");
@@ -126,7 +127,27 @@ const rendering = (mainArray) => {
 addTaskButton.addEventListener("click", (event) => {
     event.preventDefault();
     if (taskInput.value == "") {
-        alert("Write title!")
+        const {modalCard, modalText, modalCloseBtn} = modalRendering();
+        body.appendChild(modalCard);
+        modalCard.append(modalText, modalCloseBtn);
+        modalCloseBtn.addEventListener("click", (event) => {
+            event.preventDefault();
+            body.removeChild(modalCard);
+        })
+        window.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                    if (body.contains(modalCard)) {
+                    event.preventDefault();
+                    body.removeChild(modalCard);
+                }
+            }
+        });
+        /*window.addEventListener("click", (event) => {
+            if (body.contains(modalCard)) {
+                event.preventDefault();
+                body.removeChild(modalCard);
+            } 
+        });*/
     } else {
         mainArray.push({"title": taskInput.value, "description": descriptionInput.value, "status": "OPEN", })
         taskInput.value = ""; 
@@ -292,12 +313,22 @@ function updateDesc(event) {
     descriptionInput.textContent = event.target.value;
 }
 
+const modalRendering = () => {
+    const modalTemp = document.querySelector("#modal-temp");
+    const modalClone = modalTemp.content.cloneNode(true);
+
+    const modalCard = modalClone.querySelector("#modal-card");
+    const modalText = modalClone.querySelector("#modal-text");
+    const modalCloseBtn = modalClone.querySelector("#modal-close-btn");
+
+    return {modalCard, modalText, modalCloseBtn}
+}
+
 // Effects
 
 document.addEventListener('DOMContentLoaded', function() {
     let elems = document.querySelectorAll('.collapsible');
-    let instances = M.Collapsible.init(elems);
+    M.Collapsible.init(elems);
 });
-
 
 rendering(mainArray);

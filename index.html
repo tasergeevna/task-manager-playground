@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="page" lang="en">
+<html id="page" lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="style.css"/>
         <title>Task manager</title>
     </head>
-    <body>
+    <body id="body">
         <h1 class="main-headline">Please set a task</h1>
         <div class="input-wrapper">
             <div class="input-field">
@@ -64,6 +64,13 @@
                     </div>
                 </div>
             </li>  
+        </template>
+
+        <template id="modal-temp">
+            <div class="modal" id="modal-card">
+                <span class="modal-text" id="modal-text">Please, write some task!</span>
+                <button class="modal-close waves-effect waves-green btn-flat" id="modal-close-btn" type="button">OK</button>
+            </div>
         </template>
         
         <script src="app.js"></script>
