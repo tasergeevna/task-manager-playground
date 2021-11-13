@@ -4,7 +4,7 @@ const clearDescInputBtn = document.querySelector("#clear-textarea");
 const taskInput = document.querySelector("#input_text");
 const descriptionInput = document.querySelector("#textarea2");
 const container = document.querySelector(".lists-container");
-const body = document.querySelector("#body");
+const ALERT_SHOW_TIME = 5000;
 
 const listOpen = document.querySelector("#open");
 const listInProgress = document.querySelector("#in-progress");
@@ -12,48 +12,10 @@ const listDone = document.querySelector("#done");
 const lists = document.querySelectorAll(".collection");
 const clearListButtons = document.querySelectorAll(".clear-button");
 
-const mainArray = [
-    {
-        "title": "Cook some food",
-        "description": "Pork with mushrooms",
-        "status": "OPEN",
-        "_id": "X2HZ5DwTlRxLu1MF",
-        "createdAt": "2021-10-28T08:45:38.826Z",
-        "updatedAt": "2021-10-28T08:45:38.826Z"
-    },
-    {
-        "title": "Clean the bath",
-        "description": "Floor, Bath, Sink",
-        "status": "IN_PROGRESS",
-        "_id": "leHUJAqwwIeN4qAR",
-        "createdAt": "2021-10-28T08:45:41.792Z",
-        "updatedAt": "2021-10-28T08:45:41.792Z"
-    },
-    {
-        "title": "Clean the bath",
-        "description": "Floor, Bath, Sink",
-        "status": "OPEN",
-        "_id": "leHUJAqwwIeN4qAR",
-        "createdAt": "2021-10-28T08:45:41.792Z",
-        "updatedAt": "2021-10-28T08:45:41.792Z"
-    },
-    {
-        "title": "Clean the bath",
-        "description": "Floor, Bath, Sink",
-        "status": "IN_PROGRESS",
-        "_id": "leHUJAqwwIeN4qAR",
-        "createdAt": "2021-10-28T08:45:41.792Z",
-        "updatedAt": "2021-10-28T08:45:41.792Z"
-    },
-    {
-        "title": "Clean the bath",
-        "description": "Floor, Bath, Sink",
-        "status": "DONE",
-        "_id": "leHUJAqwwIeN4qAR",
-        "createdAt": "2021-10-28T08:45:41.792Z",
-        "updatedAt": "2021-10-28T08:45:41.792Z"
-    }
-];
+const SERVER_URL = "https://task-management-app-back.herokuapp.com/tasks";
+
+
+const mainArray = [];
 
 // Page rendering
 
@@ -121,6 +83,42 @@ const rendering = (mainArray) => {
     }
 }
 
+// Server interaction
+
+const getData = () => {
+    fetch(SERVER_URL)
+      .then((response) => {
+        if (response.ok) {
+            return response.json();
+        }
+        showAlert("Failed to get tasks. Please try again");
+        throw Error();
+      })
+      .then((res) => {
+        rendering(res)
+      })
+};
+
+
+const sendData = (body) => {
+    fetch(
+        SERVER_URL,
+      {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+            "Content-Type": "application/json"
+        }
+      },
+    ).then((response) => {
+      if (response.ok) {
+        getData();
+      } else {
+        showAlert("Failed to post tasks. Please try again");
+      }
+    }).catch(showAlert("Failed to post tasks. Please try again"));
+  };
+  
 
 // Buttons listeners and functions
 
@@ -142,17 +140,17 @@ addTaskButton.addEventListener("click", (event) => {
                 }
             }
         });
-        /*window.addEventListener("click", (event) => {
+       /*  window.addEventListener("click", (event) => {
             if (body.contains(modalCard)) {
                 event.preventDefault();
                 body.removeChild(modalCard);
             } 
-        });*/
+        }) */
     } else {
-        mainArray.push({"title": taskInput.value, "description": descriptionInput.value, "status": "OPEN", })
+        mainArray.push({"title": taskInput.value, "description": descriptionInput.value, "status": "OPEN"})
+        sendData({"title": taskInput.value, "description": descriptionInput.value, "status": "OPEN"});
         taskInput.value = ""; 
         descriptionInput.value = "";
-        rendering(mainArray);
     }
 })
 
@@ -324,6 +322,27 @@ const modalRendering = () => {
     return {modalCard, modalText, modalCloseBtn}
 }
 
+// Messages and modals
+
+const showAlert = (message) => {
+    const alertContainer = document.createElement('div');
+    alertContainer.style.zIndex = '100';
+    alertContainer.style.position = 'absolute';
+    alertContainer.style.left = '0';
+    alertContainer.style.top = '0';
+    alertContainer.style.right = '0';
+    alertContainer.style.padding = '10px 3px';
+    alertContainer.style.fontSize = '30px';
+    alertContainer.style.textAlign = 'center';
+    alertContainer.style.backgroundColor = 'red';
+    alertContainer.textContent = message;
+    document.body.append(alertContainer);
+  
+    setTimeout(() => {
+      alertContainer.remove();
+    }, ALERT_SHOW_TIME);
+  };
+
 // Effects
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -331,4 +350,4 @@ document.addEventListener('DOMContentLoaded', function() {
     M.Collapsible.init(elems);
 });
 
-rendering(mainArray);
+getData();
