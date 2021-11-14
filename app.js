@@ -37,20 +37,12 @@ const rendering = (mainArray) => {
                 deleteTaskButton, 
                 card, 
                 description, 
-                taskId, 
-                createContainer, 
-                updateContainer, 
-                createPrefix, 
-                updatePrefix, 
-                isoCreated, 
-                isoUpdated} = taskRendering();
+                taskId} = taskRendering();
         taskItem.setAttribute("data-index", i);
         title.textContent = mainArray[i]["title"];
         description.textContent = mainArray[i]["description"];
-        taskId.textContent = `ID: ${mainArray[i]["_id"]}`;
-        isoCreated.textContent = mainArray[i]["createdAt"];
-        isoUpdated.textContent = mainArray[i]["updatedAt"];
-
+        taskId.textContent = `ID: ${mainArray[i]["id"]}`;
+        
         taskItem.addEventListener("dragstart", dragstart);
         taskItem.addEventListener("dragend", dragend);
        
@@ -60,9 +52,27 @@ const rendering = (mainArray) => {
         taskItem.append(taskContainer, card);
         taskContainer.append(title, btnsContainer);
         btnsContainer.append(moreButton, deleteTaskButton);
-        card.append(description, taskId, createContainer, updateContainer);
-        createContainer.append(createPrefix, isoCreated);
-        updateContainer.append(updatePrefix, isoUpdated);
+        card.append(description, taskId);
+       
+       if ("createdAt" in mainArray[i]) {
+            let createContainer = card.createElement("div");
+            createContainer.classList.add("date");
+            let createPrefix = createContainer.createElement("span");
+            createPrefix.classList.add("bold");
+            createPrefix.textContent = "Created at: ";
+            let isoCreated = createContainer.createElement("span");
+            isoCreated.textContent = mainArray[i]["createdAt"];
+        }
+        if ("updatedAt" in mainArray[i]) {
+            let createContainer = card.createElement("div");
+            createContainer.classList.add("date");
+            let updatePrefix = createContainer.createElement("span");
+            updatePrefix.classList.add("bold");
+            updatePrefix.textContent = "Updated at: ";
+            let isoUpdated = createContainer.createElement("span");
+            isoUpdated.textContent = mainArray[i]["updatedAt"];
+        }
+
         card.classList.add("display-none");
 
         if (mainArray[i]["status"] === "OPEN") {
@@ -118,13 +128,31 @@ const sendData = (body) => {
       }
     }).catch(showAlert("Failed to post tasks. Please try again"));
   };
+
+const deleteData = (id) => {
+    fetch(
+        SERVER_URL + "/" + id,
+      {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+      },
+    ).then((response) => {
+      if (response.ok) {
+        getData();
+      } else {
+        showAlert("Failed to delete task. Please try again");
+      }
+    }).catch(showAlert("Failed to delete task. Please try again"));
+};
   
 
 // Buttons listeners and functions
 
 addTaskButton.addEventListener("click", (event) => {
     event.preventDefault();
-    if (taskInput.value == "") {
+    if (taskInput.value == "" || descriptionInput.value == "") {
         const {modalCard, modalText, modalCloseBtn} = modalRendering();
         body.appendChild(modalCard);
         modalCard.append(modalText, modalCloseBtn);
@@ -190,14 +218,18 @@ function showCard(event) {
     }
 }
 
-function deleteTask(event) {
+/* function deleteTask(event) {
+    console.log(mainArray);
     event.preventDefault();
     let root = event.target.parentNode.parentNode.parentNode;
     let index = root.getAttribute("data-index");
     root.parentNode.removeChild(root);
+    deleteData(mainArray[index].id);
     mainArray.splice(index, 1);
-    rendering(mainArray);
+    
 }
+
+*/
 
 for (let button of clearListButtons) {
     button.addEventListener("click", (event) => {
@@ -276,12 +308,7 @@ const taskRendering = () => {
     const card = taskClone.querySelector("#info-card");
     const description = taskClone.querySelector("#description");
     const taskId = taskClone.querySelector("#_id");
-    const createContainer = taskClone.querySelector("#create-container");
-    const updateContainer = taskClone.querySelector("#update-container");
-    const createPrefix = taskClone.querySelector("#create-prefix");
-    const updatePrefix = taskClone.querySelector("#update-prefix");
-    const isoCreated = taskClone.querySelector("#created-at");
-    const isoUpdated = taskClone.querySelector("#updated-at");
+   
     return {taskItem, 
             taskContainer, 
             title, 
@@ -290,13 +317,8 @@ const taskRendering = () => {
             deleteTaskButton, 
             card, 
             description, 
-            taskId, 
-            createContainer, 
-            updateContainer, 
-            createPrefix, 
-            updatePrefix, 
-            isoCreated, 
-            isoUpdated}
+            taskId
+            }
 }
 
 taskInput.addEventListener("change", updateTask);
