@@ -45,8 +45,9 @@ const rendering = (mainArray) => {
         
         taskItem.addEventListener("dragstart", dragstart);
         taskItem.addEventListener("dragend", dragend);
-       
-        deleteTaskButton.addEventListener("click", deleteTask);
+
+        deleteTaskButton.setAttribute("data-id", mainArray[i]["id"]);
+        deleteTaskButton.addEventListener("click", deleteData);
         moreButton.addEventListener("click", showCard);
 
         taskItem.append(taskContainer, card);
@@ -129,7 +130,8 @@ const sendData = (body) => {
     }).catch(showAlert("Failed to post tasks. Please try again"));
   };
 
-const deleteData = (id) => {
+const deleteData = (event) => {
+    let id = event.target.getAttribute("data-id");
     fetch(
         SERVER_URL + "/" + id,
       {
@@ -218,18 +220,6 @@ function showCard(event) {
     }
 }
 
-/* function deleteTask(event) {
-    console.log(mainArray);
-    event.preventDefault();
-    let root = event.target.parentNode.parentNode.parentNode;
-    let index = root.getAttribute("data-index");
-    root.parentNode.removeChild(root);
-    deleteData(mainArray[index].id);
-    mainArray.splice(index, 1);
-    
-}
-
-*/
 
 for (let button of clearListButtons) {
     button.addEventListener("click", (event) => {
