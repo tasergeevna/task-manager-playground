@@ -14,8 +14,7 @@ const clearListButtons = document.querySelectorAll(".clear-button");
 
 const SERVER_URL = "https://task-management-app-back.herokuapp.com/tasks";
 
-
-const mainArray = [];
+let mainArray = [];
 
 // Page rendering
 
@@ -100,12 +99,13 @@ const getData = () => {
     fetch(SERVER_URL)
       .then((response) => {
         if (response.ok) {
-            return response.json();
+           return response.json();
         }
         showAlert("Failed to get tasks. Please try again");
         throw Error();
       })
       .then((res) => {
+        mainArray = res;
         rendering(res)
       })
 };
@@ -127,8 +127,8 @@ const sendData = (body) => {
       } else {
         showAlert("Failed to post tasks. Please try again");
       }
-    }).catch(showAlert("Failed to post tasks. Please try again"));
-  };
+    })
+};
 
 const deleteData = (event) => {
     let id = event.target.getAttribute("data-id");
@@ -146,7 +146,7 @@ const deleteData = (event) => {
       } else {
         showAlert("Failed to delete task. Please try again");
       }
-    }).catch(showAlert("Failed to delete task. Please try again"));
+    })
 };
   
 
@@ -272,6 +272,8 @@ function dragdrop(event) {
     if (event.currentTarget.parentNode.firstElementChild.textContent === "IN PROGRESS") {
         mainArray[j.index]["status"] = "IN_PROGRESS";
         rendering(mainArray);
+
+        //sendData({j.taskItem, "status": "IN_PROGRESS"});
     } else if (event.currentTarget.parentNode.firstElementChild.textContent === "DONE") {
         mainArray[j.index]["status"] = "DONE";
         rendering(mainArray);

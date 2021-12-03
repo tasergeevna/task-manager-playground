@@ -49,6 +49,7 @@ p {
 .collection-item {
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 }
 
 .lists-container {
