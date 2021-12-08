@@ -148,7 +148,25 @@ const deleteData = (event) => {
       }
     })
 };
-  
+
+
+const updateData = (task, status) => {
+    fetch(`${SERVER_URL}/${task.id}`, {
+        method: "PUT",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ ...task, "status": status })
+      },
+    ).then((response) => {
+      if (response.ok) {
+        getData();
+      } else {
+        showAlert("Failed to edit task. Please try again");
+      }
+    })
+};
 
 // Buttons listeners and functions
 
@@ -170,12 +188,6 @@ addTaskButton.addEventListener("click", (event) => {
                 }
             }
         });
-       /*  window.addEventListener("click", (event) => {
-            if (body.contains(modalCard)) {
-                event.preventDefault();
-                body.removeChild(modalCard);
-            } 
-        }) */
     } else {
         mainArray.push({"title": taskInput.value, "description": descriptionInput.value, "status": "OPEN"})
         sendData({"title": taskInput.value, "description": descriptionInput.value, "status": "OPEN"});
@@ -246,6 +258,8 @@ function dragstart(event) {
     }, 0);
     j = {
         taskItem: event.target,
+        taskTitle: event.target.firstElementChild.firstElementChild,
+        taskDecription:  event.target.lastElementChild.firstElementChild,
         index: event.target.getAttribute("data-index")
     }
 }
@@ -271,12 +285,10 @@ function dragdrop(event) {
     event.currentTarget.classList.remove("hovered");
     if (event.currentTarget.parentNode.firstElementChild.textContent === "IN PROGRESS") {
         mainArray[j.index]["status"] = "IN_PROGRESS";
-        rendering(mainArray);
-
-        //sendData({j.taskItem, "status": "IN_PROGRESS"});
+        updateData(mainArray[j.index], "IN_PROGRESS");
     } else if (event.currentTarget.parentNode.firstElementChild.textContent === "DONE") {
         mainArray[j.index]["status"] = "DONE";
-        rendering(mainArray);
+        updateData(mainArray[j.index], "DONE");
     } else {
         mainArray[j.index]["status"] = "OPEN"
         rendering(mainArray);
